@@ -21,16 +21,16 @@ A python tool that checks to find exposed authentication keys in a project and t
 pip install key-guard
 ```
 
-- Quickly Scan your working directory by running:
-
-```bash
-key-guard -s
-```
-
 - Start by initializing the tool by running:
 
 ```bash
 key-guard -i
+```
+
+- Quickly Scan your working directory by running:
+
+```bash
+key-guard -s
 ```
 
 - Add the `--help` option the command to check out the available options.

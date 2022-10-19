@@ -5,7 +5,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
     requirements = fh.read()
 setup(
     name='key_guard',
-    version='0.0.1',
+    version='0.1',
     author='Jerry Buaba',
     author_email='buabajerry@gmail.com',
     license='MIT',

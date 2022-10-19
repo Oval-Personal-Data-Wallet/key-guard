@@ -7,12 +7,12 @@ cwd = os.getcwd()
 
 
 @click.command(name='Key Guard')
+@click.option('-i', '--init', is_flag=True, help='Initialize the key_guard')
+@click.option('-s', '--scan', is_flag=True, help='Scan the project for any key or token')
+@click.option('-l', '--list', is_flag=True, help='List all the guarded words')
 @click.option('-e', '--exempt', nargs=1, help='exempt a file from scanning by removing from .guard/.fileignore')
 @click.option('-inc', '--include', nargs=1, help='include a word to scan by adding it to .guard/.fileignore')
 @click.option('--add', '-a', nargs=1, help='Add new words to .guard/.keyignore')
-@click.option('-i', '--init', is_flag=True, help='Initialize the key_guard')
-@click.option('-l', '--list', is_flag=True, help='List all the guarded words')
-@click.option('-s', '--scan', is_flag=True, help='Scan the project for any key or token')
 @click.argument('path', type=click.Path(dir_okay=True), default=cwd, required=False)
 # @click.argument('add', type=str, required=False)
 def cli(path: str,  list: str, scan: bool, add: str, init: bool, exempt: str, include: str) -> None:

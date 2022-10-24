@@ -7,6 +7,8 @@ import time
 cwd = os.getcwd()
 
 
+
+#load exempted files and keys to guard
 def load_from_files():
     '''
     load contents of .fileignore and .keyignore and return them in a dict object
@@ -22,7 +24,43 @@ def load_from_files():
 
 
 
+
+
+
+#seach text method used in scanning
+def  searchText(path):
+    file_contents = load_from_files()  #loading contents from .fileignore and .keyignore into a dict object
+    os.chdir('..')
+    os.chdir(path)
+    path = os.listdir(path)
+    for fname in path[::-1]:
+        abs_path = os.path.abspath(fname)
+        if os.path.isfile(abs_path):
+            try:
+                if os.path.basename(fname) not in file_contents["exempted_files"] and not os.path.basename(fname).startswith('.'):
+                    for l_no, line in enumerate(open(fname, 'r')):
+                        for word in file_contents["guarded_words"]:
+                            if word in line:
+                                click.echo(click.style(
+                                        f"Warning: '{word}' found in `{fname.split('/')[-1]}` Kindly check for line: `{l_no}` -> '{line.strip()}' to make sure you don't commit sensitive data.", fg='yellow'))
+                                        
+                    path.remove(os.path.basename(fname))
+            except UnicodeDecodeError:
+                        pass
+        elif os.path.isdir(abs_path) and not os.path.basename(abs_path).startswith('.'):
+                print(f"Scanning {abs_path}")
+                searchText(abs_path)
+                path.remove(os.path.basename(abs_path))
+                os.chdir('..')
+
             
+
+
+
+
+
+
+
 
 
 
@@ -32,7 +70,7 @@ def cli(ctx):
     pass
 
 
-
+#init
 @cli.command()
 def init():
     '''
@@ -56,6 +94,21 @@ def init():
     except FileExistsError:
         click.secho("key_guard is already initialized", fg='yellow')
         pass
+
+
+
+
+#scan
+@cli.command
+@click.argument('path', type=click.Path(dir_okay=True), default=cwd, required=False)
+def scan(path):
+    try:
+        searchText(path)
+        click.echo(click.style("\nScanning completed successfully", fg='green'))
+    except FileNotFoundError:
+        click.echo(click.style("\nCould not complete scan, make sure key-guard is initialized\n", fg='red'))
+
+
 
 
 
@@ -104,12 +157,14 @@ def test(congit):
 
 #     if scan:
 #         def searchText(path):
+#             print(cwd)
 #             guarded_words = [str(word.strip())
 #                              for word in open('.guard/.keyignore').readlines()]
 #             exempted_files = [str(file.strip())
 #                               for file in open('.guard/.fileignore').readlines()]
 
 #             os.chdir('..')
+#             print(cwd)
 #             os.chdir(path)
 #             path = os.listdir(path)
 #             for fname in path[::-1]:
@@ -133,7 +188,8 @@ def test(congit):
 #         try:
 #             searchText(path)
 #             click.echo(click.style("\nScanning completed successfully", fg='green'))
-#         except FileNotFoundError:
+#         except Exception as e:
+#              print(e)
 #              click.echo(click.style("\nCould not complete scan, make sure key-guard is initialized\n", fg='red'))
 
 
@@ -200,5 +256,5 @@ def test(congit):
 #             "Welcome to key_guard! Use the `--help` option for the list of options and commands available for this tool.", fg='green')
 
 
-# if __name__ == '__main__':
-#     cli()
+if __name__ == '__main__':
+    cli()

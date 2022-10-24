@@ -46,7 +46,7 @@ Options:
   -l, --list            List all the guarded words
   -e, --exempt TEXT     exempt a file from scanning by adding them to
                         .guard/.fileignore
-  -inc, --include TEXT  include a file to be scanned by removing it\'s name
+  -inc, --include TEXT  include a file to be scanned by removing it's name
                         from  .guard/.fileignore
   -a, --add TEXT        Add new words to .guard/.keyignore
   --help                Show this message and exit.
@@ -88,7 +88,7 @@ Options:
   -l, --list            List all the guarded words
   -e, --exempt TEXT     exempt a file from scanning by adding them to
                         .guard/.fileignore
-  -inc, --include TEXT  include a file to be scanned by removing it\'s name
+  -inc, --include TEXT  include a file to be scanned by removing it's name
                         from  .guard/.fileignore
   -a, --add TEXT        Add new words to .guard/.keyignore
   --help                Show this message and exit.

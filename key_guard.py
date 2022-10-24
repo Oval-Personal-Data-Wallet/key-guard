@@ -64,10 +64,37 @@ def  searchText(path):
 
 
 
-@click.group()
+@click.group(invoke_without_command=True)
 @click.pass_context
-def cli(ctx):
-    pass
+@click.option('-l', '--list', is_flag=True, help='List all the guarded words')
+@click.option('-inc', '--include', nargs=1, help='include a file to be scanned by removing it"s name from  .guard/.fileignore')
+def cli(ctx ,list,include):
+    if ctx.invoked_subcommand is None:
+        if list:
+            file_content = load_from_files()
+            click.echo(file_content["guarded_words"])
+        if include:
+            exempted_files = [str(file.strip())
+                            for file in open('.guard/.fileignore').readlines()]
+            try:
+                with open('.guard/.fileignore', 'r') as f:
+                    lines = f.readlines()
+                    f.close()
+                with open('.guard/.fileignore', 'w') as f:
+                    for line in lines:
+                        if line.strip("\n") != include:
+                            f.write(line)
+                        else:
+                            lines.remove(line)
+                            exempted_files.remove(line.strip("\n"))
+                            click.secho(
+                                f"Removed `{include}` from .fileignore", fg='green')
+
+                    f.close()
+            except FileNotFoundError:
+                click.secho("Please initialize the key_guard first", fg='red')
+
+
 
 
 #init
@@ -98,8 +125,14 @@ def init():
 
 
 
+
+
+
+
+
+
 #scan
-@cli.command
+@cli.command()
 @click.argument('path', type=click.Path(dir_okay=True), default=cwd, required=False)
 def scan(path):
     try:
@@ -111,6 +144,15 @@ def scan(path):
 
 
 
+
+@cli.command()
+def add():
+    pass
+
+
+@cli.command()
+def exempt():
+    pass
 
     
 

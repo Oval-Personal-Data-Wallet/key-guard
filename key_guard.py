@@ -123,9 +123,6 @@ def init():
                               'password =\n', 'secret =\n', 'token =\n', 'access_token =\n'])
             f.close()
 
-
-            print(os.path.abspath(".guard/.keyignore"))
-
     except FileExistsError:
         click.secho("key_guard is already initialized", fg='yellow')
         pass
@@ -156,19 +153,52 @@ def scan(path):
 
 
 
+
+
 @cli.command()
-def add():
+@click.argument('add', type=str, required=False)
+def add(add):
     '''Add new words to .guard/.keyignore'''
-    pass
+    guarded_words = [str(word.strip())
+                         for word in open('.guard/.keyignore').readlines()]
+    try:
+        with open('.guard/.keyignore', 'a') as f:
+            if add not in guarded_words:
+                f.write(f"{add}\n")
+                f.close()
+                click.secho(
+                    f"Added `{add}` to .keyignore", fg='green')
+            else:
+                click.secho(
+                    f"`{add}` already exists in .guard/.keyignore", fg='yellow')
+    except FileNotFoundError:
+            click.secho("Please initialize the key_guard first", fg='red')
+
+
 
 
 
 
 
 @cli.command()
-def exempt():
+@click.argument('exempt', type=str, required=False)
+def exempt(exempt):
     '''exempt a file from scanning by adding them to .guard/.fileignore'''
-    pass
+    exempted_files = [str(file.strip())
+                          for file in open('.guard/.fileignore').readlines()]
+    try:
+        with open('.guard/.fileignore', 'a') as f:
+            if exempt not in exempted_files:
+                f.write(f"{exempt}\n")
+                f.close()
+                click.secho(
+                    f"Added `{exempt}` to .fileignore", fg='green')
+            else:
+                click.secho(
+                    f"`{exempt}` already exists in .guard/.fileignore", fg='yellow')
+    except FileNotFoundError:
+        click.secho("Please initialize the key_guard first", fg='red')
+
 
     
 

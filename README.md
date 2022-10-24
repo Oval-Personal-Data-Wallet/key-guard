@@ -41,9 +41,9 @@ Usage: key_guard.py [OPTIONS] [PATH]
   CLI tool to scan a project for any key or token
 
 Options:
-  -e, --exempt TEXT     exempt a file from scanning by removing from
+  -e, --exempt TEXT     exempt a file from scanning by adding them to 
                         .guard/.fileignore
-  -inc, --include TEXT  include a word to scan by adding it to
+  -inc, --include TEXT  include a file to be scanned by removing from  
                         .guard/.fileignore
   -a, --add TEXT        Add new words to .guard/.keyignore
   -i, --init            Initialize the key_guard

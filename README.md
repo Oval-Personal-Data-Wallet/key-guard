@@ -44,7 +44,7 @@ Options:
   -e, --exempt TEXT     exempt a file from scanning by adding them to 
                         .guard/.fileignore
 
-  -inc, --include TEXT  include a file to be scanned by removing from  
+  -inc, --include TEXT  include a file to be scanned by removing its name from  
                         .guard/.fileignore
 
   -a, --add TEXT        Add new words to .guard/.keyignore
@@ -54,7 +54,7 @@ Options:
   -l, --list            List all the guarded words
 
   -s, --scan            Scan the project for any key or token
-  
+
   --help                Show this message and exit.
 ```
 

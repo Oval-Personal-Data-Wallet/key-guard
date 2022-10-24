@@ -8,16 +8,17 @@ cwd = os.getcwd()
 
 
 
+
 #load exempted files and keys to guard
-def load_from_files():
+def load_from_files(fileignore_path,keyignore_path):
     '''
-    load contents of .fileignore and .keyignore and return them in a dict object
+    load contents of .fileignore and .keyignore and return them in a dict object  
     '''
     try:
         guarded_words = [str(word.strip())
-                            for word in open('.guard/.keyignore').readlines()]
+                            for word in open(keyignore_path).readlines()]
         exempted_files = [str(file.strip())
-                        for file in open('.guard/.fileignore').readlines()]
+                        for file in open(fileignore_path).readlines()]
         return {"guarded_words":guarded_words, "exempted_files":exempted_files}
     except FileNotFoundError:
         click.echo(click.style("\nmake sure key-guard is initialized\n", fg='red'))
@@ -28,8 +29,8 @@ def load_from_files():
 
 
 #seach text method used in scanning
-def  searchText(path):
-    file_contents = load_from_files()  #loading contents from .fileignore and .keyignore into a dict object
+def  searchText(path,fileignore_path,keyignore_path):
+    file_contents = load_from_files(fileignore_path,keyignore_path)  #loading contents from .fileignore and .keyignore into a dict object
     os.chdir('..')
     os.chdir(path)
     path = os.listdir(path)
@@ -49,7 +50,7 @@ def  searchText(path):
                         pass
         elif os.path.isdir(abs_path) and not os.path.basename(abs_path).startswith('.'):
                 print(f"Scanning {abs_path}")
-                searchText(abs_path)
+                searchText(abs_path,fileignore_path,keyignore_path)
                 path.remove(os.path.basename(abs_path))
                 os.chdir('..')
 
@@ -93,6 +94,12 @@ def cli(ctx ,list,include):
                     f.close()
             except FileNotFoundError:
                 click.secho("Please initialize the key_guard first", fg='red')
+        elif not list  and not include:
+            click.secho(
+                "Welcome to key_guard! Use the `--help` option for the list of options and commands available for this tool.", fg='green')
+
+
+
 
 
 
@@ -100,9 +107,7 @@ def cli(ctx ,list,include):
 #init
 @cli.command()
 def init():
-    '''
-     create .guard folder and create .fileignore and .keyignore files
-    '''
+    '''create .guard folder and create .fileignore and .keyignore files'''
     try:
         os.mkdir('.guard')
         os.chdir('.guard')
@@ -117,6 +122,9 @@ def init():
             f.writelines(['key =\n', 'access_key =\n', 'auth_key =\n',
                               'password =\n', 'secret =\n', 'token =\n', 'access_token =\n'])
             f.close()
+
+
+            print(os.path.abspath(".guard/.keyignore"))
 
     except FileExistsError:
         click.secho("key_guard is already initialized", fg='yellow')
@@ -135,8 +143,11 @@ def init():
 @cli.command()
 @click.argument('path', type=click.Path(dir_okay=True), default=cwd, required=False)
 def scan(path):
+    fileignore_path = os.path.abspath(".guard/.fileignore")
+    keyignore_path = os.path.abspath(".guard/.keyignore")
+    '''Scan the project for any key or token'''
     try:
-        searchText(path)
+        searchText(path,fileignore_path,keyignore_path)
         click.echo(click.style("\nScanning completed successfully", fg='green'))
     except FileNotFoundError:
         click.echo(click.style("\nCould not complete scan, make sure key-guard is initialized\n", fg='red'))
@@ -147,11 +158,16 @@ def scan(path):
 
 @cli.command()
 def add():
+    '''Add new words to .guard/.keyignore'''
     pass
+
+
+
 
 
 @cli.command()
 def exempt():
+    '''exempt a file from scanning by adding them to .guard/.fileignore'''
     pass
 
     

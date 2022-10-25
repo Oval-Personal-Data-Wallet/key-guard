@@ -90,6 +90,7 @@ def cli(ctx ,list,include):
                         if line.strip("\n") != include:
                             f.write(line)
                         else:
+                            
                             # lines.remove(line)  causes uninteded behaviour 
                             exempted_files.remove(line.strip("\n"))
                             click.secho(

@@ -3,9 +3,7 @@ import click
 import time
 
 
-
 cwd = os.getcwd()
-
 
 
 
@@ -22,10 +20,6 @@ def load_from_files(fileignore_path,keyignore_path):
         return {"guarded_words":guarded_words, "exempted_files":exempted_files}
     except FileNotFoundError:
         click.echo(click.style("\nmake sure key-guard is initialized\n", fg='red'))
-
-
-
-
 
 
 #seach text method used in scanning
@@ -65,14 +59,24 @@ def  searchText(path,fileignore_path,keyignore_path):
 
 
 
+
+
+
+
+
+
+
+
 @click.group(invoke_without_command=True)
 @click.pass_context
 @click.option('-l', '--list', is_flag=True, help='List all the guarded words')
-@click.option('-inc', '--include', nargs=1, help='include a file to be scanned by removing it"s name from  .guard/.fileignore')
+@click.option('-inc', '--include', nargs=1, help='include a file to be scanned by removing it\'s name from  .guard/.fileignore')
 def cli(ctx ,list,include):
     if ctx.invoked_subcommand is None:
         if list:
-            file_content = load_from_files()
+            fileignore_path = os.path.abspath(".guard/.fileignore")    #get abs path of both files 
+            keyignore_path = os.path.abspath(".guard/.keyignore")       #and use in function
+            file_content = load_from_files(fileignore_path,keyignore_path)
             click.echo(file_content["guarded_words"])
         if include:
             exempted_files = [str(file.strip())
@@ -86,7 +90,7 @@ def cli(ctx ,list,include):
                         if line.strip("\n") != include:
                             f.write(line)
                         else:
-                            lines.remove(line)
+                            # lines.remove(line)  causes uninteded behaviour 
                             exempted_files.remove(line.strip("\n"))
                             click.secho(
                                 f"Removed `{include}` from .fileignore", fg='green')
@@ -97,6 +101,7 @@ def cli(ctx ,list,include):
         elif not list  and not include:
             click.secho(
                 "Welcome to key_guard! Use the `--help` option for the list of options and commands available for this tool.", fg='green')
+
 
 
 
@@ -140,8 +145,8 @@ def init():
 @cli.command()
 @click.argument('path', type=click.Path(dir_okay=True), default=cwd, required=False)
 def scan(path):
-    fileignore_path = os.path.abspath(".guard/.fileignore")
-    keyignore_path = os.path.abspath(".guard/.keyignore")
+    fileignore_path = os.path.abspath(".guard/.fileignore")    #get abs path of both files 
+    keyignore_path = os.path.abspath(".guard/.keyignore")       #and use in function
     '''Scan the project for any key or token'''
     try:
         searchText(path,fileignore_path,keyignore_path)
@@ -154,9 +159,9 @@ def scan(path):
 
 
 
-
+#add
 @cli.command()
-@click.argument('add', type=str, required=False)
+@click.argument('add', type=str)
 def add(add):
     '''Add new words to .guard/.keyignore'''
     guarded_words = [str(word.strip())
@@ -179,9 +184,9 @@ def add(add):
 
 
 
-
+#exempt
 @cli.command()
-@click.argument('exempt', type=str, required=False)
+@click.argument('exempt', type=str)
 def exempt(exempt):
     '''exempt a file from scanning by adding them to .guard/.fileignore'''
     exempted_files = [str(file.strip())
@@ -202,11 +207,6 @@ def exempt(exempt):
 
     
 
-
-@cli.command()
-@click.pass_obj
-def test(congit):
-    print(congit)
 
 
 

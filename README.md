@@ -24,13 +24,13 @@ pip install key-guard
 - Start by initializing the tool by running:
 
 ```bash
-key-guard -i
+key-guard init
 ```
 
 - Quickly Scan your working directory by running:
 
 ```bash
-key-guard -s
+key-guard scan
 ```
 
 - Add the `--help` option the command to check out the available options.
@@ -71,7 +71,7 @@ python3 setup.py develop
 - A `*.egg-info` directory is created in your root directory for you to use the tool locally. Get started by running the following command:
 
 ```bash
-key-guard -i
+key-guard init
 ```
 
 - the `--help` option the command to check out the available options.

@@ -36,26 +36,19 @@ key-guard -s
 - Add the `--help` option the command to check out the available options.
 
 ```bash
-Usage: key_guard.py [OPTIONS] [PATH]
-
-  CLI tool to scan a project for any key or token
+Usage: key-guard [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  -e, --exempt TEXT     exempt a file from scanning by adding them to 
-                        .guard/.fileignore
-
-  -inc, --include TEXT  include a file to be scanned by removing its name from  
-                        .guard/.fileignore
-
-  -a, --add TEXT        Add new words to .guard/.keyignore
-
-  -i, --init            Initialize the key_guard
-
   -l, --list            List all the guarded words
-
-  -s, --scan            Scan the project for any key or token
-
+  -inc, --include TEXT  include a file to be scanned by removing it's name
+                        from  .guard/.fileignore
   --help                Show this message and exit.
+
+Commands:
+  add     [TEXT] -Add new words to .guard/.keyignore
+  exempt  [TEXT] -exempt a file from scanning by adding them to...
+  init    create .guard folder and create .fileignore and .keyignore files
+  scan    Scan the project for any key or token
 ```
 
 ## Setting up the tool for local development
@@ -84,20 +77,19 @@ key-guard -i
 - the `--help` option the command to check out the available options.
 
 ```bash
-Usage: key_guard.py [OPTIONS] [PATH]
+Usage: key-guard [OPTIONS] COMMAND [ARGS]...
 
-  CLI tool to scan a project for any key or token
-  
 Options:
--e, --exempt TEXT     exempt a file from scanning by removing from
-                        .guard/.fileignore
-  -inc, --include TEXT  include a word to scan by adding it to
-                        .guard/.fileignore
-  -a, --add TEXT        Add new words to .guard/.keyignore
-  -i, --init            Initialize the key_guard
   -l, --list            List all the guarded words
-  -s, --scan            Scan the project for any key or token
+  -inc, --include TEXT  include a file to be scanned by removing it's name
+                        from  .guard/.fileignore
   --help                Show this message and exit.
+
+Commands:
+  add     [TEXT] -Add new words to .guard/.keyignore
+  exempt  [TEXT] -exempt a file from scanning by adding them to...
+  init    create .guard folder and create .fileignore and .keyignore files
+  scan    Scan the project for any key or token
 ```
 
 ## Contributing

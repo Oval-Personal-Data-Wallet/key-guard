@@ -90,7 +90,7 @@ def cli(ctx ,list,include):
                         if line.strip("\n") != include:
                             f.write(line)
                         else:
-                            
+
                             # lines.remove(line)  causes uninteded behaviour 
                             exempted_files.remove(line.strip("\n"))
                             click.secho(
@@ -146,6 +146,7 @@ def init():
 @cli.command()
 @click.argument('path', type=click.Path(dir_okay=True), default=cwd, required=False)
 def scan(path):
+    '''Scan the project for any key or token'''
     fileignore_path = os.path.abspath(".guard/.fileignore")    #get abs path of both files 
     keyignore_path = os.path.abspath(".guard/.keyignore")       #and use in function
     '''Scan the project for any key or token'''
@@ -162,9 +163,9 @@ def scan(path):
 
 #add
 @cli.command()
-@click.argument('add', type=str)
+@click.argument('add', type=str, nargs=1 )
 def add(add):
-    '''Add new words to .guard/.keyignore'''
+    '''[TEXT] -Add new words to .guard/.keyignore'''
     guarded_words = [str(word.strip())
                          for word in open('.guard/.keyignore').readlines()]
     try:
@@ -187,9 +188,9 @@ def add(add):
 
 #exempt
 @cli.command()
-@click.argument('exempt', type=str)
+@click.argument('exempt',nargs=1, type=str )
 def exempt(exempt):
-    '''exempt a file from scanning by adding them to .guard/.fileignore'''
+    '''[TEXT]  -exempt a file from scanning by adding them to .guard/.fileignore'''
     exempted_files = [str(file.strip())
                           for file in open('.guard/.fileignore').readlines()]
     try:

@@ -165,7 +165,7 @@ def scan(path):
 @cli.command()
 @click.argument('add', type=str, nargs=1 )
 def add(add):
-    '''[TEXT] -Add new words to .guard/.keyignore'''
+    '''Add new words to .guard/.keyignore'''
     guarded_words = [str(word.strip())
                          for word in open('.guard/.keyignore').readlines()]
     try:
@@ -190,7 +190,7 @@ def add(add):
 @cli.command()
 @click.argument('exempt',nargs=1, type=str )
 def exempt(exempt):
-    '''[TEXT]  -exempt a file from scanning by adding them to .guard/.fileignore'''
+    '''exempt a file from scanning by adding them to .guard/.fileignore'''
     exempted_files = [str(file.strip())
                           for file in open('.guard/.fileignore').readlines()]
     try:

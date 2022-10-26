@@ -45,8 +45,8 @@ Options:
   --help                Show this message and exit.
 
 Commands:
-  add     [TEXT] -Add new words to .guard/.keyignore
-  exempt  [TEXT] -exempt a file from scanning by adding them to...
+  add     Add new words to .guard/.keyignore
+  exempt  exempt a file from scanning by adding them to .guard/.fileignore
   init    create .guard folder and create .fileignore and .keyignore files
   scan    Scan the project for any key or token
 ```
@@ -86,8 +86,8 @@ Options:
   --help                Show this message and exit.
 
 Commands:
-  add     [TEXT] -Add new words to .guard/.keyignore
-  exempt  [TEXT] -exempt a file from scanning by adding them to...
+  add     Add new words to .guard/.keyignore
+  exempt  exempt a file from scanning by adding them to .guard/.fileignore
   init    create .guard folder and create .fileignore and .keyignore files
   scan    Scan the project for any key or token
 ```

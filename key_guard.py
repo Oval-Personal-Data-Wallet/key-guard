@@ -1,6 +1,5 @@
 import os
 import click
-import time
 
 
 cwd = os.getcwd()
@@ -221,3 +220,5 @@ def exempt(exempt):
 
 if __name__ == '__main__':
     cli()
+
+
